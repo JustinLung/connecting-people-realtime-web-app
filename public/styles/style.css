@@ -1,6 +1,6 @@
 @font-face {
-  font-family: 'Modern Era Medium';
-  src: url('../assets/fonts/Modern-Era-Medium.ttf');
+  font-family: "Modern Era Medium";
+  src: url("../assets/fonts/Modern-Era-Medium.ttf");
 }
 
 :root {
@@ -19,18 +19,21 @@
 }
 
 body {
-  font-family: 'Modern Era Medium', sans-serif;
+  font-family: "Modern Era Medium", sans-serif;
   box-sizing: border-box;
-  padding: 0;
-  margin: 0;
 
   background-color: var(--color-black);
   color: var(--color-white);
-}
+  position: relative;
 
-main {
-  margin-left: 8.0625em;
-  height: 30.9em;
+  display: grid;
+  min-height: 100vh;
+  width: 100%;
+  grid-template-areas:
+    "header header header"
+    "aside main main";
+  grid-template-rows: 4.5em auto;
+  grid-template-columns: 15em auto;
 }
 
 h1 {
@@ -43,6 +46,27 @@ header {
   padding-left: 8.0625em;
   color: var(--color-black);
   background-color: var(--color-white);
+  grid-area: header;
+}
+
+aside {
+  background: var(--color-blue);
+  grid-area: aside;
+  padding: 2.5em;
+}
+
+aside > div {
+  top: 1.5rem;
+  position: sticky;
+}
+
+main {
+  grid-area: main;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 2em;
 }
 
 #message-container {
@@ -51,7 +75,6 @@ header {
   display: flex;
   flex-direction: column;
   gap: 2.5em;
-  height: 100%;
   overflow-y: auto;
 }
 
