@@ -126,6 +126,20 @@ header > button {
 aside {
   background: var(--color-blue);
   grid-area: aside;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 5em;
+}
+
+aside ul {
+  padding-top: 1em;
+}
+
+aside li {
+  text-decoration: underline;
+  cursor: pointer;
 }
 
 aside > div {
