@@ -40,6 +40,11 @@ io.on('connection', (socket) => {
     delete users[socket.id]
     socket.emit('update-list', users)
   })
+
+  // UI Stack
+  socket.on('typing', function(data) {
+    socket.broadcast.emit('typing', data);
+})
 })
 
 // Cache Headers

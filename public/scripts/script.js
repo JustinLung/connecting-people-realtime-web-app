@@ -7,10 +7,12 @@ let usersList = document.querySelector('.users-list')
 let userCountEl = document.querySelector('.user-count')
 let overlay = document.querySelector('.overlay')
 let messages = document.querySelector('#message-container')
+let loadingMessages = document.querySelector('#loading-messages')
 let messageInput = document.querySelector('#message-input')
 let messageForm = document.querySelector('form')
 let submitButton = document.querySelector('.submit-button')
 let name = localStorage.getItem('name') || prompt('What is your name?')
+let feedback = document.querySelector('#feedback')
 let date = new Date().toLocaleDateString([], {
   year: 'numeric',
   month: 'numeric',
@@ -29,20 +31,36 @@ closeButton.addEventListener('click', () => {
 
 messageForm.addEventListener('submit', (e) => {
   e.preventDefault()
+  feedback.innerHTML = ''
   let message = messageInput.value
-  if (messageInput.value === '') return
-  messages.insertAdjacentHTML(
+  loadingMessages.insertAdjacentHTML(
     'beforeend',
     `
-		<li>
-      <span class="circle">${name.charAt(0)}</span>
+    <li class="loading-message">
+      <span class="circle-loading">${name.charAt(0)}</span>
       <div class="message">
         <h2>${name} ${date}</h2>
         <p>${message}</p>
+        <p class="loading-margin"><img class="loading-image" src="assets/icons/clock.svg" /> Sending...</p>
       </div>
-		</li>
-	`
+    </li>
+  `
   )
+  setTimeout(() => {
+    loadingMessages.innerHTML = ''
+    messages.insertAdjacentHTML(
+      'beforeend',
+      `
+      <li>
+        <span class="circle">${name.charAt(0)}</span>
+        <div class="message">
+          <h2>${name} ${date}</h2>
+          <p>${message}</p>
+        </div>
+      </li>
+    `
+    )
+  }, 500)
   socket.emit('send-chat-message', message)
   messageInput.value = ''
   messages.scrollTo(0, messages.scrollHeight)
@@ -51,6 +69,10 @@ messageForm.addEventListener('submit', (e) => {
 localStorage.setItem('name', name)
 
 renderWelcomeMessage()
+
+messageInput.addEventListener('keypress', function () {
+  socket.emit('typing', name)
+})
 
 // Socket.io Functions
 
@@ -61,22 +83,38 @@ socket.on('user-connected', (name) => {
     `beforeend`,
     `<li>${name} has joined the chat!</li>`
   )
-  messages.scrollTo(0, messages.scrollHeight)
 })
 
 socket.on('chat-message', (data) => {
-  messages.insertAdjacentHTML(
+  feedback.innerHTML = ''
+  loadingMessages.insertAdjacentHTML(
     'beforeend',
     `
-		<li>
-      <span class="circle circle-received">${data.name.charAt(0)}</span>
+    <li class="loading-message">
+      <span class="circle-loading">${name.charAt(0)}</span>
       <div class="message">
-        <h2>${data.name} ${date}</h2>
-        <p>${data.message}</p>
+        <h2>${name} ${date}</h2>
+        <p>${message}</p>
+        <p class="loading-margin"><img src="assets/icons/clock.svg" /> Sending...</p>
       </div>
-		</li>
-	`
+    </li>
+  `
   )
+  setTimeout(() => {
+    loadingMessages.innerHTML = ''
+    messages.insertAdjacentHTML(
+      'beforeend',
+      `
+      <li>
+        <span class="circle">${name.charAt(0)}</span>
+        <div class="message">
+          <h2>${name} ${date}</h2>
+          <p>${message}</p>
+        </div>
+      </li>
+    `
+    )
+  }, 2000)
   messages.scrollTo(0, messages.scrollHeight)
 })
 
@@ -101,6 +139,13 @@ socket.on('update-list', (users) => {
       usersList.insertAdjacentHTML('beforeend', `<li>${user}</li>`)
     })
   }
+})
+
+socket.on('typing', (data) => {
+  feedback.innerHTML = `<p><em> ${data} is typing...</em></p>`
+  setTimeout(() => {
+    feedback.innerHTML = ''
+  }, 5000)
 })
 
 // Functions
