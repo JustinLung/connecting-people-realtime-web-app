@@ -140,8 +140,6 @@ main {
   flex-direction: column;
   justify-content: flex-end;
   padding: 2em;
-
-  height: 50em;
 }
 
 .circle {
