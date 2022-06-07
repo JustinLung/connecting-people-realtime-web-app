@@ -27,17 +27,17 @@ closeButton.addEventListener('click', () => {
 
 messageForm.addEventListener('submit', (e) => {
   e.preventDefault()
+  if (messageInput.value === '') return
   isTyping.innerHTML = ''
   let message = messageInput.value
   loadingMessages.insertAdjacentHTML(
     'beforeend',
     `
     <li class="loading-message">
-      <span class="circle-loading">${name.charAt(0)}</span>
+      <span class="circle loading">${name.charAt(0)}</span>
       <div class="message">
-        <h2>${name} ${date}</h2>
+        <h2>${name} ${date} <span><img class="loading-image" src="assets/icons/clock.svg" /> Sending...</span></h2>
         <p>${message}</p>
-        <p class="loading-margin"><img class="loading-image" src="assets/icons/clock.svg" /> Sending...</p>
       </div>
     </li>
   `
@@ -79,45 +79,30 @@ socket.on('user-connected', (name) => {
     `beforeend`,
     `<li>${name} has joined the chat!</li>`
   )
+  messages.scrollTo(0, messages.scrollHeight)
 })
 
 socket.on('chat-message', (data) => {
   isTyping.innerHTML = ''
-  loadingMessages.insertAdjacentHTML(
+  messages.insertAdjacentHTML(
     'beforeend',
     `
     <li class="loading-message">
       <span class="circle-loading">${name.charAt(0)}</span>
       <div class="message">
-        <h2>${name} ${date}</h2>
-        <p>${message}</p>
-        <p class="loading-margin"><img src="assets/icons/clock.svg" /> Sending...</p>
+        <h2>${data.name} ${date}</h2>
+        <p>${data.message}</p>
       </div>
     </li>
   `
   )
-  setTimeout(() => {
-    loadingMessages.innerHTML = ''
-    messages.insertAdjacentHTML(
-      'beforeend',
-      `
-      <li>
-        <span class="circle">${name.charAt(0)}</span>
-        <div class="message">
-          <h2>${name} ${date}</h2>
-          <p>${message}</p>
-        </div>
-      </li>
-    `
-    )
-  }, 2000)
   messages.scrollTo(0, messages.scrollHeight)
 })
 
 socket.on('user-disconnected', (data) => {
   messages.insertAdjacentHTML(
     `beforeend`,
-    `<li>${name} has left the chat!</li>`
+    `<li>${data.name} has left the chat!</li>`
   )
   messages.scrollTo(0, messages.scrollHeight)
 })
