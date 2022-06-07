@@ -23,6 +23,7 @@
 }
 
 * {
+  scroll-behavior: smooth;
   list-style: none;
   text-decoration: none;
   padding: 0;
@@ -67,7 +68,7 @@ header {
   background-color: var(--color-white);
   grid-area: header;
 
-  padding-left: 15em;
+  padding-left: 17em;
   padding-right: 2em;
 }
 
@@ -110,11 +111,6 @@ header > button {
   display: flex;
   align-items: center;
 }
-
-.users {
-  margin-top: 2em;
-}
-
 .open-menu {
   opacity: 1;
 }
@@ -126,6 +122,20 @@ header > button {
 aside {
   background: var(--color-blue);
   grid-area: aside;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 5em;
+}
+
+aside ul {
+  padding-top: 1em;
+}
+
+aside li {
+  text-decoration: underline;
+  cursor: pointer;
 }
 
 aside > div {
@@ -166,12 +176,12 @@ main {
 }
 
 #message-container {
-  margin-top: 2.75em;
-  margin-bottom: 2.75em;
   display: flex;
   flex-direction: column;
   overflow-y: auto;
   gap: 2.5em;
+  margin-top: 2.5em;
+  margin-bottom: 2.5em;
 }
 
 li {
@@ -183,9 +193,17 @@ li {
   margin-left: 0.75em;
 }
 
-form {
+.message span {
+  margin-left: 0.5em;
+}
+
+#send-container {
   display: flex;
   gap: 1em;
+}
+
+#is-typing {
+  margin-bottom: 0.5em;
 }
 
 button {
@@ -214,37 +232,15 @@ button {
   font-weight: bold;
 }
 
-#feedback {
-  margin-bottom: 1em;
-}
-
 #loading-messages {
   color: var(--color-blue);
+  opacity: 0.8;
   display: flex;
+  margin-bottom: 0.5em;
 }
 
-.loading-message {
-  margin-bottom: 2.75em;
-}
-
-.circle-loading {
-  height: 46px;
-  width: 46px;
+.loading {
   background-color: var(--color-blue);
-  color: var(--color-black);
-
-  font-size: 1.2rem;
-  text-transform: uppercase;
-  border-radius: 50%;
-
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-}
-
-.loading-margin {
-  margin-top: 0.5em;
 }
 
 .loading-image {
