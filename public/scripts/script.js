@@ -12,7 +12,7 @@ let messageInput = document.querySelector('#message-input')
 let messageForm = document.querySelector('form')
 let submitButton = document.querySelector('.submit-button')
 let name = localStorage.getItem('name') || prompt('What is your name?')
-let feedback = document.querySelector('#feedback')
+let isTyping = document.querySelector('#is-typing')
 let date = new Date().toLocaleDateString([], {
   year: 'numeric',
   month: 'numeric',
@@ -31,7 +31,7 @@ closeButton.addEventListener('click', () => {
 
 messageForm.addEventListener('submit', (e) => {
   e.preventDefault()
-  feedback.innerHTML = ''
+  isTyping.innerHTML = ''
   let message = messageInput.value
   loadingMessages.insertAdjacentHTML(
     'beforeend',
@@ -86,7 +86,7 @@ socket.on('user-connected', (name) => {
 })
 
 socket.on('chat-message', (data) => {
-  feedback.innerHTML = ''
+  isTyping.innerHTML = ''
   loadingMessages.insertAdjacentHTML(
     'beforeend',
     `
@@ -142,9 +142,9 @@ socket.on('update-list', (users) => {
 })
 
 socket.on('typing', (data) => {
-  feedback.innerHTML = `<p><em> ${data} is typing...</em></p>`
+  isTyping.innerHTML = `<p><em> ${data} is typing...</em></p>`
   setTimeout(() => {
-    feedback.innerHTML = ''
+    isTyping.innerHTML = ''
   }, 5000)
 })
 
