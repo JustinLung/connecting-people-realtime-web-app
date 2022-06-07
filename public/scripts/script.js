@@ -1,15 +1,33 @@
 // Variables
 
 let socket = io()
+let userButton = document.querySelector('#user-button')
+let closeButton = document.querySelector('.close-button')
+let usersList = document.querySelector('.users-list')
+let userCountEl = document.querySelector('.user-count')
+let overlay = document.querySelector('.overlay')
 let messages = document.querySelector('#message-container')
 let loadingMessages = document.querySelector('#loading-messages')
 let messageInput = document.querySelector('#message-input')
 let messageForm = document.querySelector('form')
+let submitButton = document.querySelector('.submit-button')
 let name = localStorage.getItem('name') || prompt('What is your name?')
-let date = new Date().toLocaleDateString([], { year: 'numeric', month: 'numeric', day: 'numeric' })
-let feedback =  document.querySelector('#feedback');
+let feedback = document.querySelector('#feedback')
+let date = new Date().toLocaleDateString([], {
+  year: 'numeric',
+  month: 'numeric',
+  day: 'numeric',
+})
 
 // Eventlisteners and Function Decleration
+
+userButton.addEventListener('click', () => {
+  overlay.classList.add('open-menu')
+})
+
+closeButton.addEventListener('click', () => {
+  overlay.classList.remove('open-menu')
+})
 
 messageForm.addEventListener('submit', (e) => {
   e.preventDefault()
@@ -42,7 +60,7 @@ messageForm.addEventListener('submit', (e) => {
       </li>
     `
     )
-  }, 2000)
+  }, 500)
   socket.emit('send-chat-message', message)
   messageInput.value = ''
   messages.scrollTo(0, messages.scrollHeight)
@@ -52,7 +70,7 @@ localStorage.setItem('name', name)
 
 renderWelcomeMessage()
 
-messageInput.addEventListener('keypress', function(){
+messageInput.addEventListener('keypress', function () {
   socket.emit('typing', name)
 })
 
@@ -105,9 +123,25 @@ socket.on('user-disconnected', (data) => {
     `beforeend`,
     `<li>${name} has left the chat!</li>`
   )
+  messages.scrollTo(0, messages.scrollHeight)
 })
 
-socket.on('typing', data => {
+socket.on('update-list', (users) => {
+  usersList.innerHTML = ''
+  const userList = Object.values(users)
+  if (userList.length === 1 && userList[0] === name) {
+    usersList.insertAdjacentHTML(
+      'beforeend',
+      `<p class="no-users-text">There is no one in this chatroom.</p>`
+    )
+  } else {
+    userList.forEach((user) => {
+      usersList.insertAdjacentHTML('beforeend', `<li>${user}</li>`)
+    })
+  }
+})
+
+socket.on('typing', (data) => {
   feedback.innerHTML = `<p><em> ${data} is typing...</em></p>`
   setTimeout(() => {
     feedback.innerHTML = ''

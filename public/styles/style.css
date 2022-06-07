@@ -1,10 +1,11 @@
 @font-face {
-  font-family: "Modern Era Medium";
-  src: url("../assets/fonts/Modern-Era-Medium.ttf");
+  font-family: 'Modern Era Medium';
+  src: url('../assets/fonts/Modern-Era-Medium.ttf');
 }
 
 :root {
   --color-black: #1a1a1a;
+  --color-black-transparent: rgba(26, 26, 26, 0.8);
   --color-white: #ffffff;
   --light-grey: #f5f6f9;
   --color-blue: #888caf;
@@ -29,7 +30,7 @@
 }
 
 body {
-  font-family: "Modern Era Medium", sans-serif;
+  font-family: 'Modern Era Medium', sans-serif;
   box-sizing: border-box;
 
   background-color: var(--color-black);
@@ -40,8 +41,8 @@ body {
   min-height: 100vh;
   width: 100%;
   grid-template-areas:
-    "header header header"
-    "aside main main";
+    'header header header'
+    'aside main main';
   grid-template-rows: 4.5em auto;
   grid-template-columns: 15em auto;
 }
@@ -59,18 +60,72 @@ p {
 }
 
 header {
-  padding-top: 1em;
-  padding-bottom: 1em;
-  padding-left: 17em;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
   color: var(--color-black);
   background-color: var(--color-white);
   grid-area: header;
+
+  padding-left: 15em;
+  padding-right: 2em;
+}
+
+header > button {
+  margin-left: auto;
+  position: relative;
+}
+
+.overlay {
+  position: fixed;
+  z-index: 1;
+  background-color: var(--color-black-transparent);
+  color: var(--color-white);
+  overflow-x: hidden;
+  height: 100%;
+  width: 20em;
+  right: 0;
+  top: 0;
+  opacity: 0;
+  transition: 0.2s ease-in-out;
+  pointer-events: none;
+  padding: 0 2em;
+}
+
+.overlay .close-button {
+  pointer-events: all;
+  font-size: 3rem;
+  cursor: pointer;
+}
+
+.overlay .no-users-text,
+.overlay .users-list {
+  font-size: 1.3rem;
+  padding-top: 1em;
+  text-decoration: underline;
+}
+
+.overlay-header {
+  height: 4.5em;
+  display: flex;
+  align-items: center;
+}
+
+.users {
+  margin-top: 2em;
+}
+
+.open-menu {
+  opacity: 1;
+}
+
+.overlay h2 {
+  font-size: 1.5em;
 }
 
 aside {
   background: var(--color-blue);
   grid-area: aside;
-  padding: 2.5em;
 }
 
 aside > div {
@@ -146,7 +201,7 @@ button {
 }
 
 #message-input {
-  font-family: "Modern Era Medium";
+  font-family: 'Modern Era Medium';
   font-size: 1rem;
   padding-left: 2.5em;
   border: none;
@@ -195,16 +250,4 @@ button {
 .loading-image {
   display: inline-flex;
   vertical-align: top;
-}
-
-#chooseImage {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: var(--color-blue);
-  max-height: 3.5625em;
-  width: 3.5625em;
-  border: none;
-  border-radius: 0.5em;
-  cursor: pointer;
 }

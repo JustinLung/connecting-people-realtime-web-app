@@ -2,12 +2,12 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <!-- Styles -->
-  <link rel="stylesheet" href="/styles/style.css">
+  <link rel="stylesheet" href="/styles/style.css" />
   <!-- Scripts -->
   <script defer src="/socket.io/socket.io.js"></script>
   <script defer src="/scripts/script.js"></script>
@@ -16,6 +16,21 @@
 </head>
 
 <body>
-<header>
-  <h1>Lord of the Rings</h1>
-</header>
+  <header>
+    <h1>Lord of the Rings</h1>
+    <button id="user-button">
+      <img src="assets/icons/users.svg" alt="Users Icon" />
+    </button>
+    <div class="overlay">
+      <div class="overlay-header">
+        <p class="close-button">&times;</p>
+      </div>
+      <div class="users">
+        <h2> Users online in this chat: </h2>
+        <ul class="users-list"></ul>
+      </div>
+    </div>
+  </header>
+</body>
+
+</html>

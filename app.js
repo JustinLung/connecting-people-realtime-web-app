@@ -20,24 +20,30 @@ io.on('connection', (socket) => {
   socket.on('new-user', (name) => {
     users[socket.id] = name
     socket.broadcast.emit('user-connected', name)
+    socket.emit('update-list', users)
   })
 
   socket.on('send-chat-message', (message) => {
     socket.broadcast.emit('chat-message', {
       message: message,
       name: users[socket.id],
-      date: new Date().toLocaleDateString([], {year: 'numeric', month: 'numeric', day: 'numeric'})
+      date: new Date().toLocaleDateString([], {
+        year: 'numeric',
+        month: 'numeric',
+        day: 'numeric',
+      }),
     })
+  })
+
+  // UI Stack
+  socket.on('typing', function (data) {
+    socket.broadcast.emit('typing', data)
   })
 
   socket.on('disconnect', () => {
     socket.broadcast.emit('user-disconnected', users[socket.id])
     delete users[socket.id]
-  })
-
-  // UI Stack
-  socket.on('typing', function(data) {
-    socket.broadcast.emit('typing', data);
+    socket.emit('update-list', users)
   })
 })
 
