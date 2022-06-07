@@ -197,7 +197,7 @@ li {
   margin-left: 0.75em;
 }
 
-form {
+#send-container {
   display: flex;
   gap: 1em;
 }

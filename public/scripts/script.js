@@ -13,11 +13,7 @@ let messageForm = document.querySelector('form')
 let submitButton = document.querySelector('.submit-button')
 let name = localStorage.getItem('name') || prompt('What is your name?')
 let isTyping = document.querySelector('#is-typing')
-let date = new Date().toLocaleDateString([], {
-  year: 'numeric',
-  month: 'numeric',
-  day: 'numeric',
-})
+let date = new Date().toLocaleDateString('en-gb')
 
 // Eventlisteners and Function Decleration
 
