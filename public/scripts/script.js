@@ -14,6 +14,7 @@ let submitButton = document.querySelector('.submit-button')
 let name = localStorage.getItem('name') || prompt('What is your name?')
 let isTyping = document.querySelector('#is-typing')
 let date = new Date().toLocaleDateString('en-gb')
+let emojis = document.querySelector('.emojis')
 let smileyButton = document.querySelector('#smiley-button')
 
 // Eventlisteners and Function Decleration
@@ -71,9 +72,15 @@ messageInput.addEventListener('keypress', function () {
   socket.emit('typing', name)
 })
 
-smileyButton.addEventListener('click', (e) => {
-  messageInput.value += '&#128512;'
-  return
+smileyButton.addEventListener('click', () => {
+  emojis.classList.toggle('dissapear')
+})
+
+emojis.addEventListener('click', (event) => {
+  if (event.target != event.currentTarget) {
+    let smiley = event.target
+    messageInput.value += smiley.textContent
+  }
 })
 
 // Socket.io Functions

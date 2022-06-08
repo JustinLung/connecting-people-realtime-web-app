@@ -247,3 +247,14 @@ button {
   display: inline-flex;
   vertical-align: top;
 }
+
+.emojis {
+  margin-bottom: 0.5em;
+  font-size: 2rem;
+  cursor: pointer;
+  display: none;
+}
+
+.dissapear {
+  display: block;
+}
