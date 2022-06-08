@@ -1,24 +1,24 @@
 // Variables
-let socket = io()
+const socket = io()
 
 // User List Variables
-let userButton = document.querySelector('#user-button')
-let closeButton = document.querySelector('.close-button')
-let usersList = document.querySelector('.users-list')
-let overlay = document.querySelector('.overlay')
+const userButton = document.querySelector('#user-button')
+const closeButton = document.querySelector('.close-button')
+const usersList = document.querySelector('.users-list')
+const overlay = document.querySelector('.overlay')
 
 // Messages Variables
-let messages = document.querySelector('#message-container')
-let loadingMessages = document.querySelector('#loading-messages')
-let messageInput = document.querySelector('#message-input')
-let messageForm = document.querySelector('form')
-let submitButton = document.querySelector('.submit-button')
-let isTyping = document.querySelector('#is-typing')
-let date = new Date().toLocaleDateString('en-gb')
-let emojis = document.querySelector('.emojis')
+const messages = document.querySelector('#message-container')
+const loadingMessages = document.querySelector('#loading-messages')
+const messageInput = document.querySelector('#message-input')
+const messageForm = document.querySelector('form')
+const submitButton = document.querySelector('.submit-button')
+const isTyping = document.querySelector('#is-typing')
+const date = new Date().toLocaleDateString('en-gb')
+const smileyButton = document.querySelector('#smiley-button')
+const emojis = document.querySelector('.emojis')
 
-let name = localStorage.getItem('name') || prompt('What is your name?')
-let smileyButton = document.querySelector('#smiley-button')
+const name = localStorage.getItem('name') || prompt('What is your name?')
 
 // Eventlisteners and Function Decleration
 localStorage.setItem('name', name)
@@ -35,7 +35,7 @@ closeButton.addEventListener('click', () => {
 
 messageForm.addEventListener('submit', (e) => {
   e.preventDefault()
-  let message = messageInput.value
+  const message = messageInput.value
   renderSendMessage()
   socket.emit('send-chat-message', message)
   messageInput.value = ''
@@ -50,10 +50,11 @@ smileyButton.addEventListener('click', () => {
   emojis.classList.toggle('dissapear')
 })
 
-emojis.addEventListener('click', (event) => {
-  if (event.target != event.currentTarget) {
-    let smiley = event.target
+emojis.addEventListener('click', (e) => {
+  if (e.target != e.currentTarget) {
+    const smiley = e.target
     messageInput.value += smiley.textContent
+    messageInput.focus()
   }
 })
 
@@ -62,14 +63,44 @@ emojis.addEventListener('click', (event) => {
 socket.emit('new-user', name)
 
 socket.on('user-connected', (name) => {
+  renderUserConnected(name)
+})
+
+socket.on('chat-message', (data) => {
+  renderChatMessage(data)
+})
+
+socket.on('user-disconnected', (data) => {
+  renderUserDisconnected(data)
+})
+
+socket.on('update-list', (users) => {
+  renderUpdateList(users)
+})
+
+socket.on('typing', (data) => {
+  renderIsTyping(data)
+})
+
+// Functions
+
+function renderUserConnected(name) {
   messages.insertAdjacentHTML(
     `beforeend`,
     `<li>${name} has joined the chat!</li>`
   )
   messages.scrollTo(0, messages.scrollHeight)
-})
+}
 
-socket.on('chat-message', (data) => {
+function renderUserDisconnected(data) {
+  messages.insertAdjacentHTML(
+    `beforeend`,
+    `<li>${data} has left the chat!</li>`
+  )
+  messages.scrollTo(0, messages.scrollHeight)
+}
+
+function renderChatMessage(data) {
   isTyping.innerHTML = ''
   messages.insertAdjacentHTML(
     'beforeend',
@@ -84,19 +115,11 @@ socket.on('chat-message', (data) => {
   `
   )
   messages.scrollTo(0, messages.scrollHeight)
-})
+}
 
-socket.on('user-disconnected', (data) => {
-  messages.insertAdjacentHTML(
-    `beforeend`,
-    `<li>${data} has left the chat!</li>`
-  )
-  messages.scrollTo(0, messages.scrollHeight)
-})
-
-socket.on('update-list', (users) => {
+function renderUpdateList(data) {
   usersList.innerHTML = ''
-  const userList = Object.values(users)
+  const userList = Object.values(data)
   if (userList.length === 1 && userList[0] === name) {
     usersList.insertAdjacentHTML(
       'beforeend',
@@ -107,16 +130,14 @@ socket.on('update-list', (users) => {
       usersList.insertAdjacentHTML('beforeend', `<li>${user}</li>`)
     })
   }
-})
+}
 
-socket.on('typing', (data) => {
+function renderIsTyping(data) {
   isTyping.innerHTML = `<p><em> ${data} is typing...</em></p>`
   setTimeout(() => {
     isTyping.innerHTML = ''
   }, 5000)
-})
-
-// Functions
+}
 
 function renderWelcomeMessage() {
   messages.insertAdjacentHTML(
@@ -128,7 +149,7 @@ function renderWelcomeMessage() {
 function renderSendMessage() {
   if (messageInput.value === '') return
   isTyping.innerHTML = ''
-  let message = messageInput.value
+  const message = messageInput.value
   loadingMessages.insertAdjacentHTML(
     'beforeend',
     `
