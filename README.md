@@ -2,6 +2,8 @@
 
 Realtime Chat applicatie waarbij gebruikers kunnen praten over ervaringen bij het lezen van de boeken.
 
+![Mockup Image](https://github.com/JustinLung/connecting-people-realtime-web-app/blob/main/docs/mockup.png?raw=true)
+
 ## 📚 Inhoudsopgave
 
 - [Beschrijving](#beschrijving)
