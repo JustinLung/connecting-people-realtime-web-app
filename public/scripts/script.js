@@ -53,21 +53,21 @@ messageInput.addEventListener('keypress', function () {
 socket.emit('new-user', name)
 
 socket.on('user-connected', (name) => {
-  userConnected()
+  userConnected(name)
 })
 
 socket.on('chat-message', (data) => {
-  renderMessage()
+  renderMessage(data)
 })
 
 socket.on('user-disconnected', (data) => {
-  userDisconnected()
+  userDisconnected(data)
 })
 
 socket.on('update-list', (users) => {
-  updateList()
+  updateList(users)
 })
 
 socket.on('typing', (data) => {
-  typing()
+  typing(data)
 })

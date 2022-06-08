@@ -1,4 +1,9 @@
-function userConnected() {
+const usersList = document.querySelector('.users-list')
+let name = localStorage.getItem('name') || prompt('What is your name?')
+
+localStorage.setItem('name', name)
+
+function userConnected(name) {
   messages.insertAdjacentHTML(
     `beforeend`,
     `<li>${name} has joined the chat!</li>`
@@ -6,7 +11,7 @@ function userConnected() {
   messages.scrollTo(0, messages.scrollHeight)
 }
 
-function userDisconnected() {
+function userDisconnected(data) {
   messages.insertAdjacentHTML(
     `beforeend`,
     `<li>${data.name} has left the chat!</li>`
@@ -14,7 +19,7 @@ function userDisconnected() {
   messages.scrollTo(0, messages.scrollHeight)
 }
 
-function updateList() {
+function updateList(users) {
   usersList.innerHTML = ''
   const userList = Object.values(users)
   if (userList.length === 1 && userList[0] === name) {
