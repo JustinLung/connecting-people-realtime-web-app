@@ -2,7 +2,7 @@
   "main": "app.js",
   "scripts": {
     "minify": "node scripts/minify.js",
-    "start": "nodemon app.js"
+    "start": "node app.js"
   },
   "devDependencies": {
     "nodemon": "^2.0.16"
