@@ -40,10 +40,10 @@ io.on('connection', (socket) => {
     socket.broadcast.emit('typing', data)
   })
 
-  socket.on('disconnect', () => {
+  socket.on('disconnect', (data) => {
     socket.broadcast.emit('user-disconnected', users[socket.id])
-    delete users[socket.id]
     socket.emit('update-list', users)
+    delete users[socket.id]
   })
 })
 

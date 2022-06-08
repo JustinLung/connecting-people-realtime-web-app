@@ -82,7 +82,7 @@ socket.on('chat-message', (data) => {
 socket.on('user-disconnected', (data) => {
   messages.insertAdjacentHTML(
     `beforeend`,
-    `<li>${data.name} has left the chat!</li>`
+    `<li>${data} has left the chat!</li>`
   )
   messages.scrollTo(0, messages.scrollHeight)
 })
